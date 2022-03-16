@@ -286,6 +286,114 @@ export class Stdlib_C4_Rel {
   }
 }
 
+export type ActivityElement = (
+  | Activity
+  | IfElseStatement
+  | ForkStatement
+)
+
+export class StartActivity {
+  public text: string;
+
+  constructor() { 
+    this.text = 'start';
+  }
+}
+
+export class EndActivity {
+  public text: string;
+  
+  constructor() { 
+    this.text = 'end';
+  }
+}
+
+export class StopActivity {
+  public text: string;
+  
+  constructor() { 
+    this.text = 'stop';
+  }
+}
+
+export class KillActivity {
+  public text: string;
+  
+  constructor() { 
+    this.text = 'kill';
+  }
+}
+
+export class DetachActivity {
+  public text: string;
+  
+  constructor() { 
+    this.text = 'detach';
+  }
+}
+
+export class Activity {
+  constructor (
+    public text: string,
+  ) { }
+}
+
+export class IfElseStatement {
+  public activityType = 'if';
+  constructor (
+    public condition: string,
+    public ifLabel: string | undefined,
+    public ifActivities: ActivityElement[],
+    public elseLabel: string | undefined,
+    public elseActivities: ActivityElement[],
+  ) { }
+}
+
+export class CaseStatement {
+  constructor (
+    public condition: string,
+    public activities: ActivityElement[],
+  ) { }
+}
+
+export class SwitchStatement {
+  public activityType = 'switch';
+  constructor (
+    public test: string,
+    public cases: CaseStatement[],
+  ) { }
+}
+
+export class ForkStatement {
+  public activityType = 'fork';
+  constructor (
+    public forks: ActivityElement[][],
+    public endsWith: 'fork' | 'merge',
+    public endForkLabel: string | undefined,
+  ) { }
+}
+
+export class RepeatStatement {
+  public activityType = 'repeat';
+  constructor (
+    public activities: ActivityElement[],
+    public backward: Activity | undefined,
+    public condition: string,
+    public trueLabel: string | undefined,
+    public falseLabel: string | undefined,
+  ) { }
+}
+
+export class WhileStatement {
+  public activityType = 'while';
+  constructor (
+    public condition: string,
+    public activities: ActivityElement[],
+    public whileLabel: string | undefined,
+    public endLabel: string | undefined,
+  ) { }
+}
+
 export type UMLElement = (
   | Note
   | Component
@@ -301,6 +409,8 @@ export type UMLElement = (
   | Stdlib_C4_Dynamic_Rel
   | Stdlib_C4_Deployment
   | Stdlib_C4_Rel
+  | StartActivity
+  | ActivityElement
 );
 export class UML {
   constructor (

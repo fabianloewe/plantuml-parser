@@ -1,5 +1,44 @@
 [
   {
-    "elements": []
+    "elements": [
+      {
+        "text": "start"
+      },
+      {
+        "text": "Eat Hot Wings"
+      },
+      {
+        "text": "Drink Homebrew"
+      },
+      {
+        "text": "__Having Fun__!!!"
+      },
+      {
+        "forks": [
+          [
+            {
+              "text": "Scream At TV!!"
+            }
+          ]
+        ],
+        "endsWith": "fork",
+        "activityType": "fork"
+      },
+      {
+        "text": "Not Having Fun"
+      },
+      {
+        "text": "Eat Poptart"
+      },
+      {
+        "text": "end"
+      },
+      {
+        "text": "Go To Bed"
+      },
+      {
+        "text": "stop"
+      }
+    ]
   }
 ]

@@ -3,7 +3,26 @@
     "name": "test/fixtures/activity-repeat/in.plantuml",
     "diagrams": [
       {
-        "elements": []
+        "elements": [
+          {
+            "text": "start"
+          },
+          {
+            "activities": [
+              {
+                "text": "Eat Hot Wings"
+              },
+              {
+                "text": "Drink Homebrew"
+              }
+            ],
+            "condition": "Still Hungry?",
+            "activityType": "repeat"
+          },
+          {
+            "text": "stop"
+          }
+        ]
       }
     ]
   }

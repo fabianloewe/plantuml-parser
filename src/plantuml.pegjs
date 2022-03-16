@@ -94,6 +94,9 @@ UMLElement
  / Stdlib_C4_Dynamic_Rel
  / Stdlib_C4_Deployment
  / Stdlib_C4_Rel
+ / StartActivity
+ / ActivityElement
+ / EndActivity
  / NotImplementedBlock
  / (!(
       _ "@enduml"
@@ -909,4 +912,138 @@ Stdlib_C4_Rel
       direction.name,
       techn.name,
     );
+  }
+
+//
+// Activity
+//
+
+ActivityElement 
+  = KillActivity
+  / StopActivity
+  / DetachActivity
+  / Activity
+  / IfElseStatement
+  / IfIsStatement
+  / IfEqualsStatement
+  / SwitchStatement
+  / ForkStatement
+  / RepeatStatement
+  / WhileStatement
+
+StartActivity
+  = _ "start" _ EndLine
+  {
+    return new types.StartActivity();
+  }
+
+EndActivity
+  = _ "end" _ EndLine
+  {
+    return new types.EndActivity();
+  }
+
+KillActivity
+  = _ "kill" _ EndLine
+  {
+    return new types.KillActivity();
+  }
+
+StopActivity
+  = _ "stop" _ EndLine
+  {
+    return new types.StopActivity();
+  }
+
+DetachActivity
+  = _ "detach" _ EndLine
+  {
+    return new types.DetachActivity();
+  }
+
+Activity
+  = _ "\:" _ text:(!(";" NewLine) .)+ EndLine
+  {
+    return new types.Activity(extractText(text));
+  }
+
+IfElseStatement
+  = _ "if" _ "(" condition:(!")" .)+ ")" _ "then" _ ifLabel:("(" it:(!")" .)+ ")" { return extractText(it); })? _ NewLine ifActivities:ActivityElement+ _ "else" _ elseLabel:("(" _ it:(!")" .)+ ")" { return extractText(it); })? _ NewLine elseActivities:ActivityElement+ _ "endif" _ EndLine
+  {
+    return new types.IfElseStatement(
+      extractText(condition),
+      ifLabel,
+      ifActivities,
+      elseLabel,
+      elseActivities
+    );
+  }
+
+IfIsStatement
+  = _ "if" _ "(" condition:(!")" .)+ ")" _ "is" _ ifLabel:("(" it:(!")" .)+ ")" { return extractText(it); })? _ "then" _ NewLine ifActivities:ActivityElement+ _ "else" _ elseLabel:("(" _ it:(!")" .)+ ")" { return extractText(it); })? _ NewLine elseActivities:ActivityElement+ _ "endif" _ EndLine
+  {
+    return new types.IfElseStatement(
+      extractText(condition),
+      ifLabel,
+      ifActivities,
+      elseLabel,
+      elseActivities
+    );
+  }
+
+IfEqualsStatement
+  = _ "if" _ "(" condition:(!")" .)+ ")" _ "equals" _ ifLabel:("(" it:(!")" .)+ ")" { return extractText(it); })? _ "then" _ NewLine ifActivities:ActivityElement+ _ "else" _ elseLabel:("(" _ it:(!")" .)+ ")" { return extractText(it); })? _ NewLine elseActivities:ActivityElement+ _ "endif" _ EndLine
+  {
+    return new types.IfElseStatement(
+      extractText(condition),
+      ifLabel,
+      ifActivities,
+      elseLabel,
+      elseActivities
+    );
+  }
+
+SwitchStatement
+  = _ "switch" _ "(" test:(!")" .)+ ")" _ NewLine _ cases:(NewLine? _ "case" _ "(" condition:(!")" .)+ ")" _ NewLine _ caseActivities:ActivityElement+ { return [extractText(condition), caseActivities]; })+ _ NewLine? _ "endswitch" _ NewLine?
+  {
+    return new types.SwitchStatement(
+      extractText(test),
+      cases.map(([condition, caseActivities]: [string, types.ActivityElement[]]) => new types.CaseStatement(
+        condition,
+        caseActivities
+      ))
+    )
+  }
+
+ForkStatement
+  = _ "fork" _ EndLine forkActivities:ActivityElement+ forkAgainActivities:(_ "fork again" _ NewLine elements:ActivityElement+ { return elements })* _ endsWith:("end fork" { return "fork" } / "end merge" { return "merge" }) endForkLabel:("{" _ it:(!"}" .)+ "}" { return extractText(it); })? _ EndLine
+  {
+    return new types.ForkStatement(
+      [forkActivities, ...forkAgainActivities],
+      endsWith,
+      !endForkLabel || endForkLabel.length === 0 || !endForkLabel[0] ? undefined : endForkLabel
+    );
+  }
+
+RepeatStatement
+  = _ "repeat" _ NewLine _ activities:ActivityElement+ backward:(_ "backward" it:Activity { return it; })? _ "repeat while" _ "(" condition:(!")" .)+ ")" _ trueLabel:(_ "is" _ "(" it:(!")" .)+ ")" { return it; })? _ falseLabel:(_ "not" _ "(" it:(!")" .)+ ")" { return it; })? _ EndLine
+  {
+    return new types.RepeatStatement(
+      activities,
+      !backward || backward.length === 0 || !backward[0] ? undefined : backward,
+      extractText(condition),
+      !trueLabel || trueLabel.length === 0 || !trueLabel[0] ? undefined : trueLabel,
+      !falseLabel || falseLabel.length === 0 || !falseLabel[0] ? undefined : falseLabel
+    )
+  }
+
+WhileStatement
+  = _ "while" _ "(" condition:(!")" .)+ ")" _ whileLabel:(_ "is" _ "(" it:(!")" .)+ ")" { return extractText(it); })? _ NewLine _ activities:ActivityElement+ _ "endwhile" _ endLabel:("(" it:(!")" .)+ ")" { return extractText(it); })? _ EndLine
+  {
+    return new types.WhileStatement(
+      extractText(condition),
+      activities,
+      !whileLabel || whileLabel.length === 0 || !whileLabel[0] ? undefined : whileLabel,
+      !endLabel || endLabel.length === 0 || !endLabel[0] ? undefined : endLabel
+    )
   }

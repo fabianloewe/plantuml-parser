@@ -1,5 +1,18 @@
 [
   {
-    "elements": []
+    "elements": [
+      {
+        "text": "start"
+      },
+      {
+        "text": "Eat Hot Wings"
+      },
+      {
+        "text": "Drink Homebrew"
+      },
+      {
+        "text": "stop"
+      }
+    ]
   }
 ]

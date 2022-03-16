@@ -3,7 +3,31 @@
     "name": "test/fixtures/activity-while-loop/in.plantuml",
     "diagrams": [
       {
-        "elements": []
+        "elements": [
+          {
+            "text": "start"
+          },
+          {
+            "condition": "Hungry?",
+            "activities": [
+              {
+                "text": "Eat Hot Wings"
+              },
+              {
+                "text": "Drink Homebrew"
+              }
+            ],
+            "whileLabel": "Yes",
+            "endLabel": "No",
+            "activityType": "while"
+          },
+          {
+            "text": "Go To Sleep"
+          },
+          {
+            "text": "stop"
+          }
+        ]
       }
     ]
   }

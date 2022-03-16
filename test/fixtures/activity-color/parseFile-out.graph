@@ -4,7 +4,20 @@
       "name": "test/fixtures/activity-color/in.plantuml",
       "diagrams": [
         {
-          "elements": []
+          "elements": [
+            {
+              "text": "start"
+            },
+            {
+              "text": "Eat Hot Wings"
+            },
+            {
+              "text": "Drink Homebrew"
+            },
+            {
+              "text": "stop"
+            }
+          ]
         }
       ],
       "id": "test/fixtures/activity-color/in.plantuml",

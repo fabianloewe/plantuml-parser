@@ -2,8 +2,20 @@
   {
     "elements": [
       {
+        "text": "start"
+      },
+      {
+        "text": "Eat Hot Wings"
+      },
+      {
         "text": "This is a Note...\n    * Activity diagrams can begin with a Start\n    * An activity is colon, some words, and a semicolon\n    * Activity diagrams can end with a stop",
         "of": ""
+      },
+      {
+        "text": "Drink Homebrew"
+      },
+      {
+        "text": "stop"
       }
     ]
   }

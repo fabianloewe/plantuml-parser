@@ -1,32 +1,22 @@
 @startuml
 
-title Conditional - Activity Diagram
+title Switch - Activity Diagram
 
 
 start
-if (Good idea) then (yes)
-  :Do
-  good
-  idea
-  ;
-else 
-  :Do nothing;
-endif
-
 
 :Eat Hot Wings;
 note right: This is a note to the right
 
 :Drink Homebrew;
 note left: This is a note to the left
-:Get beer;
-if (Turn On The Game?) then (yes)
+
+switch (Turn On The Game?) 
+case (yes)
   :__Having Fun__!!!;
-else (no)
+case (no)
   :Not Having Fun;
-endif
-
-
+endswitch
 
 :Go To Bed;
 

@@ -1,6 +1,6 @@
 [
   {
-    "name": "test/fixtures/activity-conditional/in.plantuml",
+    "name": "test/fixtures/activity-switch/in.plantuml",
     "diagrams": [
       {
         "elements": [
@@ -22,20 +22,26 @@
             "of": ""
           },
           {
-            "condition": "Turn On The Game?",
-            "ifLabel": "yes",
-            "ifActivities": [
+            "test": "Turn On The Game?",
+            "cases": [
               {
-                "text": "__Having Fun__!!!"
+                "condition": "yes",
+                "activities": [
+                  {
+                    "text": "__Having Fun__!!!"
+                  }
+                ]
+              },
+              {
+                "condition": "no",
+                "activities": [
+                  {
+                    "text": "Not Having Fun"
+                  }
+                ]
               }
             ],
-            "elseLabel": "no",
-            "elseActivities": [
-              {
-                "text": "Not Having Fun"
-              }
-            ],
-            "activityType": "if"
+            "activityType": "switch"
           },
           {
             "text": "Go To Bed"
