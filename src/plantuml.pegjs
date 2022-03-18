@@ -285,6 +285,16 @@ Method
       extractText(_arguments),
     );
   }
+  / _ isStatic:"static "i? _ accessor:Accessor? _ name:Name _ "(" _arguments:(!")" .)* ")" _ ":" _ type:TypeName EndLine
+  {
+    return new types.Method(
+      name,
+      !!isStatic,
+      accessor,
+      type,
+      extractText(_arguments),
+    );
+  }
   / _ isStatic:"static "i? _ accessor:Accessor? _ name:Name _ "(" _arguments:(!")" .)* ")" EndLine
   {
     return new types.Method(
@@ -299,6 +309,15 @@ Method
 
 MemberVariable
   = _ isStatic:"static "i? _ accessor:Accessor? _ type:Name _ name:Name EndLine
+  {
+    return new types.MemberVariable(
+      name,
+      !!isStatic,
+      accessor,
+      type,
+    );
+  }
+  / _ isStatic:"static "i? _ accessor:Accessor? _ name:Name _ ":" _ type:TypeName  EndLine
   {
     return new types.MemberVariable(
       name,
@@ -681,6 +700,12 @@ Name
   = name:([A-Za-z0-9._]+)
   {
     return name.join('');
+  }
+
+TypeName
+  = name:((!";") .)+
+  {
+    return extractText(name);
   }
 
 NameList
