@@ -56,17 +56,24 @@ PlantUMLFile
 Diagrams
   = diagrams:(
     (!"@startuml" .)*
-    "@startuml" _ DiagramId? _ NewLine
+    "@startuml" _ id:DiagramId? _ NewLine
       uml:UML
     "@enduml" _ NewLine?
     (!"@startuml" .)*
     {
-     return uml;
+      return new types.Diagram(
+        uml.elements, 
+        !id || id.length === 0 || !id[0] ? undefined : id,
+      );
     }
   )+
 
 DiagramId
-  = "(" _ "id" _ "=" Name ")"
+  = "(" _ "id" _ "=" name:Name ")"
+  / _ name:Name
+  {
+    return name
+  }
 
 UML
   = elements:UMLElement*

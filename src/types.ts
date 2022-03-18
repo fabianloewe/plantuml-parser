@@ -412,6 +412,14 @@ export type UMLElement = (
   | StartActivity
   | ActivityElement
 );
+
+export class Diagram {
+  constructor (
+    public elements: UMLElement[],
+    public id?: string,
+  ) { }
+}
+
 export class UML {
   constructor (
     public elements: UMLElement[],
@@ -421,7 +429,7 @@ export class UML {
 export class File {
   constructor (
     public name: string,
-    public diagrams: UML[],
+    public diagrams: Diagram[],
   ) {
     this.diagrams = diagrams || [];
   }
